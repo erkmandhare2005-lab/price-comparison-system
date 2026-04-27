@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Results for "{{ query }}" - PriceCompare India{% endblock %}
+
+{% block content %}
+<section class="results-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="breadcrumb-item active">Results</li>
+            </ol>
+        </nav>
+        
+        <h1 class="results-title">Results for <span class="gradient-text" id="query-display">{{ query }}</span></h1>
+        <p class="results-subtitle">Comparing prices across Amazon & Flipkart</p>
+    </div>
+</section>
+
+<section class="results-section">
+    <div class="container">
+        <div id="loading-state" class="loading-wrapper">
+            <div class="loading-spinner"></div>
+            <h4 class="mt-4">Fetching best prices...</h4>
+            <p class="text-muted">Scraping Amazon and Flipkart in real-time</p>
+        </div>
+        
+        <div id="error-state" class="alert alert-danger d-none" role="alert"></div>
+        
+        <div id="results-content" class="d-none">
+            <div class="results-toolbar mb-4">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    <div class="best-price-pill">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>Best price highlighted automatically</span>
+                    </div>
+                    <span id="result-count" class="results-count"></span>
+                </div>
+            </div>
+            
+            <div id="results-grid" class="row g-4"></div>
+        </div>
+        
+        <div id="no-results" class="no-results d-none">
+            <div class="no-results-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+            </div>
+            <h4>No results found</h4>
+            <p class="text-muted">Try searching with a different product name.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Back to Search</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    if (query) {
+        loadResults(query);
+    }
+});
+</script>
+{% endblock %}

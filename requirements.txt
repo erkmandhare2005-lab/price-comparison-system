@@ -1,0 +1,8 @@
+flask
+flask-sqlalchemy
+pymysql
+cryptography
+selenium
+webdriver-manager
+python-dotenv
+undetected-chromedriver

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-particles" id="particles"></div>
+    <div class="container hero-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 text-center">
+                <div class="badge-glass mb-4">
+                    <span class="pulse-dot"></span>
+                    Live Price Comparison
+                </div>
+                <h1 class="hero-title">Find the Best Deals in <span class="gradient-text">India</span></h1>
+                <p class="hero-subtitle">
+                    Compare real-time prices from Amazon and Flipkart. Save money on every purchase with smart price tracking.
+                </p>
+                
+                <form id="search-form" class="search-box">
+                    <div class="search-inner">
+                        <svg class="search-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            class="search-input" 
+                            placeholder="Search for mobiles, laptops, electronics..."
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit" class="search-btn">
+                            <span>Compare</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="popular-searches mt-4">
+                    <span class="text-white-50">Popular:</span>
+                    <a href="/results?q=iPhone+15" class="popular-tag">iPhone 15</a>
+                    <a href="/results?q=Samsung+Galaxy" class="popular-tag">Samsung Galaxy</a>
+                    <a href="/results?q=MacBook+Air" class="popular-tag">MacBook Air</a>
+                    <a href="/results?q=Sony+WH-1000XM5" class="popular-tag">Sony WH-1000XM5</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Why PriceCompare?</h2>
+            <p class="section-subtitle">Smart shopping made simple for Indian consumers</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon-wrap icon-indigo">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                        </svg>
+                    </div>
+                    <h4>Instant Search</h4>
+                    <p>Search any product and get results from Amazon and Flipkart in seconds with our automated scrapers.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon-wrap icon-emerald">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M2 12h20"/>
+                        </svg>
+                    </div>
+                    <h4>Best Price Highlighted</h4>
+                    <p>The lowest price is instantly highlighted with a glowing border so you never miss the best deal.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon-wrap icon-amber">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                    <h4>Direct Purchase</h4>
+                    <p>Click through directly to Amazon or Flipkart and complete your purchase securely without intermediaries.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="platforms">
+    <div class="container text-center">
+        <p class="text-muted mb-4">Trusted platforms we compare</p>
+        <div class="platform-logos">
+            <div class="platform-logo amazon-logo">amazon</div>
+            <div class="platform-logo flipkart-logo">flipkart</div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initParticles();
+    initIndexPage();
+});
+</script>
+{% endblock %}
