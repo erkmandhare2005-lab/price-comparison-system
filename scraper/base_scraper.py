@@ -1,3 +1,4 @@
+
 """Shared scraping infrastructure.
 
 BaseScraper  - owns the Chrome driver lifecycle, waiting, scrolling, block detection.
@@ -7,6 +8,7 @@ CardScraper  - a configurable scraper: subclasses only list CSS selectors for th
                starting with the rupee sign, first sensible line as the title).
 """
 import logging
+import os
 import re
 import threading
 import time
@@ -99,7 +101,14 @@ class BaseScraper(ABC):
         opts.add_experimental_option('useAutomationExtension', False)
         opts.page_load_strategy = 'eager'   # don't wait for every tracker/ad to load
 
-        driver_path = get_driver_path()
+        chrome_bin = os.environ.get("CHROME_BIN")
+        if chrome_bin:
+            opts.binary_location = chrome_bin
+
+        driver_path = (
+            os.environ.get("CHROMEDRIVER_PATH")
+            or get_driver_path()
+        )
         service = Service(driver_path) if driver_path else Service()
         self.driver = webdriver.Chrome(service=service, options=opts)
         self.driver.set_page_load_timeout(self.page_load_timeout)
