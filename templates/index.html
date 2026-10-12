@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block page %}index{% endblock %}
+
 {% block content %}
 <section class="hero">
     <div class="hero-bg"></div>
@@ -9,42 +11,76 @@
             <div class="col-lg-9 text-center">
                 <div class="badge-glass mb-4">
                     <span class="pulse-dot"></span>
-                    Live Price Comparison
+                    Live price comparison &middot; {{ platform_list|length }} stores
                 </div>
                 <h1 class="hero-title">Find the Best Deals in <span class="gradient-text">India</span></h1>
                 <p class="hero-subtitle">
-                    Compare real-time prices from Amazon and Flipkart. Save money on every purchase with smart price tracking.
+                    One search, every major store. Compare live prices, spot the lowest one instantly, and track how it moves over time.
                 </p>
-                
-                <form id="search-form" class="search-box">
+
+                <form id="search-form" class="search-box" autocomplete="off">
                     <div class="search-inner">
-                        <svg class="search-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg class="search-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input 
-                            type="text" 
-                            id="search-input" 
-                            class="search-input" 
-                            placeholder="Search for mobiles, laptops, electronics..."
-                            autocomplete="off"
-                            required
-                        >
+                        <input type="text" id="search-input" class="search-input"
+                               placeholder="Search for mobiles, laptops, headphones..."
+                               maxlength="100" autocomplete="off" required
+                               role="combobox" aria-expanded="false" aria-controls="suggest-box">
+                        <kbd class="kbd-hint d-none d-md-inline">/</kbd>
                         <button type="submit" class="search-btn">
                             <span>Compare</span>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                         </button>
                     </div>
+                    <ul id="suggest-box" class="suggest-box d-none" role="listbox"></ul>
                 </form>
-                
-                <div class="popular-searches mt-4">
-                    <span class="text-white-50">Popular:</span>
-                    <a href="/results?q=iPhone+15" class="popular-tag">iPhone 15</a>
-                    <a href="/results?q=Samsung+Galaxy" class="popular-tag">Samsung Galaxy</a>
-                    <a href="/results?q=MacBook+Air" class="popular-tag">MacBook Air</a>
-                    <a href="/results?q=Sony+WH-1000XM5" class="popular-tag">Sony WH-1000XM5</a>
+
+                <div class="chip-row mt-4" id="recent-wrap" hidden>
+                    <span class="chip-label">Recent</span>
+                    <span id="recent-searches" class="chip-list"></span>
+                    <button type="button" class="chip-clear" id="recent-clear">Clear</button>
                 </div>
+
+                <div class="chip-row mt-3">
+                    <span class="chip-label" id="trending-label">Popular</span>
+                    <span id="trending-searches" class="chip-list">
+                        <a href="/results?q=iPhone+15" class="popular-tag">iPhone 15</a>
+                        <a href="/results?q=Samsung+Galaxy+S24" class="popular-tag">Samsung Galaxy S24</a>
+                        <a href="/results?q=MacBook+Air+M2" class="popular-tag">MacBook Air M2</a>
+                        <a href="/results?q=Sony+WH-1000XM5" class="popular-tag">Sony WH-1000XM5</a>
+                    </span>
+                </div>
+
+                <div class="category-row mt-4">
+                    <a class="category-pill" href="/results?q=smartphone">&#128241; Phones</a>
+                    <a class="category-pill" href="/results?q=laptop">&#128187; Laptops</a>
+                    <a class="category-pill" href="/results?q=headphones">&#127911; Audio</a>
+                    <a class="category-pill" href="/results?q=smart+tv">&#128250; TVs</a>
+                    <a class="category-pill" href="/results?q=smartwatch">&#8986; Watches</a>
+                    <a class="category-pill" href="/results?q=air+conditioner">&#10052; ACs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-strip">
+    <div class="container">
+        <div class="row g-3 text-center">
+            <div class="col-4">
+                <div class="strip-value" data-count="{{ platform_list|length }}" id="stat-stores">{{ platform_list|length }}</div>
+                <div class="strip-label">Stores compared</div>
+            </div>
+            <div class="col-4">
+                <div class="strip-value" data-count="0" id="stat-searches">0</div>
+                <div class="strip-label">Searches run here</div>
+            </div>
+            <div class="col-4">
+                <div class="strip-value" data-count="0" id="stat-prices">0</div>
+                <div class="strip-label">Prices tracked</div>
             </div>
         </div>
     </div>
@@ -52,43 +88,84 @@
 
 <section class="features">
     <div class="container">
-        <div class="section-header text-center mb-5">
+        <div class="section-header text-center" data-reveal>
             <h2 class="section-title">Why PriceCompare?</h2>
             <p class="section-subtitle">Smart shopping made simple for Indian consumers</p>
         </div>
         <div class="row g-4">
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4" data-reveal>
                 <div class="feature-card">
                     <div class="feature-icon-wrap icon-indigo">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                        </svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>
                     </div>
-                    <h4>Instant Search</h4>
-                    <p>Search any product and get results from Amazon and Flipkart in seconds with our automated scrapers.</p>
+                    <h4>Parallel live scraping</h4>
+                    <p>Every store is searched at the same time, and results appear on screen the moment each one finishes.</p>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4" data-reveal>
                 <div class="feature-card">
                     <div class="feature-icon-wrap icon-emerald">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2v20M2 12h20"/>
-                        </svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
                     </div>
-                    <h4>Best Price Highlighted</h4>
-                    <p>The lowest price is instantly highlighted with a glowing border so you never miss the best deal.</p>
+                    <h4>Best price highlighted</h4>
+                    <p>The lowest price gets a glowing badge, and every other card shows exactly how much more it costs.</p>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4" data-reveal>
                 <div class="feature-card">
                     <div class="feature-icon-wrap icon-amber">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
                     </div>
-                    <h4>Direct Purchase</h4>
-                    <p>Click through directly to Amazon or Flipkart and complete your purchase securely without intermediaries.</p>
+                    <h4>Price history</h4>
+                    <p>Every search is recorded, so you can chart how the lowest price on each store changes between runs.</p>
                 </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-reveal>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap icon-rose">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h12M3 18h6"/></svg>
+                    </div>
+                    <h4>Filter, sort &amp; compare</h4>
+                    <p>Narrow by store, price and rating, then put up to three products side by side in one table.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-reveal>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap icon-sky">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+                    </div>
+                    <h4>Wishlist &amp; export</h4>
+                    <p>Save products to a wishlist in your browser, or download the whole result set as a CSV file.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4" data-reveal>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap icon-violet">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                    </div>
+                    <h4>Dark mode</h4>
+                    <p>A theme switch that remembers your choice and follows your system setting the first time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header text-center" data-reveal>
+            <h2 class="section-title">How it works</h2>
+            <p class="section-subtitle">From search to best deal in three steps</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-reveal>
+                <div class="step-card"><span class="step-num">1</span><h5>Search</h5><p>Type any product name. Suggestions come from your recent and popular searches.</p></div>
+            </div>
+            <div class="col-md-4" data-reveal>
+                <div class="step-card"><span class="step-num">2</span><h5>Watch it compare</h5><p>Each store reports in as it finishes, with a live status chip for every one.</p></div>
+            </div>
+            <div class="col-md-4" data-reveal>
+                <div class="step-card"><span class="step-num">3</span><h5>Buy at the best price</h5><p>Click through to the store directly. Nothing sits between you and the checkout.</p></div>
             </div>
         </div>
     </div>
@@ -96,10 +173,41 @@
 
 <section class="platforms">
     <div class="container text-center">
-        <p class="text-muted mb-4">Trusted platforms we compare</p>
+        <p class="text-muted mb-4">Stores we compare</p>
         <div class="platform-logos">
-            <div class="platform-logo amazon-logo">amazon</div>
-            <div class="platform-logo flipkart-logo">flipkart</div>
+            {% for p in platform_list %}
+            <div class="platform-logo" style="--brand: {{ p.color }}">{{ p.name|lower }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="faq">
+    <div class="container">
+        <div class="section-header text-center" data-reveal>
+            <h2 class="section-title">Questions</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-reveal>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Why can a store show no results?</button></h3>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Stores sometimes show a captcha or change their page layout. When that happens the store's chip turns red with the reason, and the other stores still work.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Are the prices final?</button></h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Prices are read from each store's search page at the moment you search. Bank offers, coupons and delivery charges can change the final amount at checkout.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">How does price history work?</button></h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Each fresh search saves the prices it found. The chart on the results page plots the lowest price per store for every run, so it fills in as you search the same product again.</div></div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">Where is my wishlist stored?</button></h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">In your own browser's local storage. It never leaves your device, so clearing site data removes it.</div></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -107,9 +215,8 @@
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    initParticles();
-    initIndexPage();
+document.addEventListener('DOMContentLoaded', function () {
+    IndexPage.init();
 });
 </script>
 {% endblock %}

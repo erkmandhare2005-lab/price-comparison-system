@@ -1,8 +1,3 @@
-flask
-flask-sqlalchemy
-pymysql
-cryptography
-selenium
-webdriver-manager
-python-dotenv
-undetected-chromedriver
+Flask>=3.0
+selenium>=4.20
+webdriver-manager>=4.0
