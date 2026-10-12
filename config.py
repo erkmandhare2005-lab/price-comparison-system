@@ -19,9 +19,9 @@ class Config:
 
     # Scraping
     HEADLESS = _env_bool('HEADLESS', True)
-    MAX_RESULTS_PER_PLATFORM = int(os.environ.get('MAX_RESULTS_PER_PLATFORM', 8))
-    MAX_PARALLEL_BROWSERS = int(os.environ.get('MAX_PARALLEL_BROWSERS', 3))
-    PAGE_LOAD_TIMEOUT = int(os.environ.get('PAGE_LOAD_TIMEOUT', 35))
+    MAX_RESULTS_PER_PLATFORM = int(os.environ.get('MAX_RESULTS_PER_PLATFORM', 4))
+    MAX_PARALLEL_BROWSERS = int(os.environ.get('MAX_PARALLEL_BROWSERS', 1))
+    PAGE_LOAD_TIMEOUT = int(os.environ.get('PAGE_LOAD_TIMEOUT', 20))
 
     # Which stores are active (keys from scraper/__init__.py -> SCRAPERS)
     ENABLED_SCRAPERS = [
