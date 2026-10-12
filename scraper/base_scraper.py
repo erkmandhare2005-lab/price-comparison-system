@@ -73,9 +73,9 @@ class BaseScraper(ABC):
     base_url = ''
     brand_color = '#6366f1'          # 6-digit hex, used by the UI
 
-    wait_timeout = 12                # seconds to wait for result cards
-    settle_seconds = 1.5             # extra pause so lazy content can render
-    scroll_steps = 4                 # scroll passes to trigger lazy-loaded images
+    wait_timeout = 8                 # seconds to wait for result cards
+    settle_seconds = 0.5             # short pause for rendered content
+    scroll_steps = 1                 # one scroll pass to reduce scraping time
     page_load_timeout = 35
     result_selector = ''             # CSS selector (comma list ok) to wait for
 
